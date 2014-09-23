@@ -130,10 +130,10 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
 
   }
 
-  //for cluster shape  
-  ESHandle<CaloGeometry> caloGeometry;
-  iSetup.get<CaloGeometryRecord>().get(caloGeometry);
-  const CaloGeometry *caloGeom = caloGeometry.product();
+  //for cluster shape //[Alpha] No need so far 
+  //ESHandle<CaloGeometry> caloGeometry;
+  //iSetup.get<CaloGeometryRecord>().get(caloGeometry);
+  //const CaloGeometry *caloGeom = caloGeometry.product();
   //ESHandle<MagneticField> theMagField; 
   //iSetup.get<IdealMagneticFieldRecord>().get(theMagField); 
   //ESHandle<GlobalTrackingGeometry> theTrackingGeometry; 
