@@ -18,31 +18,24 @@
 //
 
 #include "SkimTool/ESHitSkimLoose/interface/ESHitSkimLoose.h"
-
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/ESHandle.h"
-
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "FWCore/Common/interface/TriggerNames.h"
-
 #include "Geometry/CaloGeometry/interface/CaloGeometry.h"
 #include "Geometry/Records/interface/IdealGeometryRecord.h"
 #include "Geometry/Records/interface/CaloGeometryRecord.h"
 #include "Geometry/CaloEventSetup/interface/CaloTopologyRecord.h"
-
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
 #include "RecoCaloTools/MetaCollections/interface/CaloRecHitMetaCollections.h"
-
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
-
 #define GEN 0
 
 using namespace std;
-
 //
 // constructors and destructor
 //
@@ -67,7 +60,6 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
   
   _runNum = evt.id().run();
   _evtNum = evt.id().event();
-
   _evt_run++;
   Ntrack = Nesrh = 0; 
 
@@ -85,21 +77,16 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
   // Get ES rechits
   edm::Handle<EcalRecHitCollection> PreshowerRecHits;
   evt.getByLabel(InputTag("ecalPreshowerRecHit","EcalRecHitsES"), PreshowerRecHits);
-  if( PreshowerRecHits.isValid() ) 
-    EcalRecHitMetaCollection preshowerHits(*PreshowerRecHits);  
-
+  if( PreshowerRecHits.isValid() ) EcalRecHitMetaCollection preshowerHits(*PreshowerRecHits);  
   const ESRecHitCollection *ESRH = PreshowerRecHits.product();
   EcalRecHitCollection::const_iterator esrh_it;
-  for ( esrh_it = ESRH->begin(); esrh_it != ESRH->end(); esrh_it++)
-  { Nesrh++; break; }
-
+ 
+  for ( esrh_it = ESRH->begin(); esrh_it != ESRH->end(); esrh_it++){ Nesrh++; break; }
 
   // Get reco Tracks 
   edm::Handle<reco::TrackCollection>   TrackCol;
   evt.getByLabel( "generalTracks",      TrackCol );
-
   cout << " number of tracks " << TrackCol->size() << endl;
-
   for(reco::TrackCollection::const_iterator itTrack = TrackCol->begin();
       itTrack != TrackCol->end(); ++itTrack)
   {    
@@ -131,31 +118,25 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
   }
 
   if( Nesrh>0 && Ntrack>0 ) return true;  
-
   return false;
-
 }
 
 // ------------ method called once each job just before starting event loop  ------------
 void
 ESHitSkimLoose::beginJob()
 {
-
  std::cout<<"In ESHitSkimLoose.beginJob\n";
-
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
 void
 ESHitSkimLoose::endJob() {
   std::cout<<"In ESHitSkimLoose.endJob\n";
-
   cout << endl;
   cout << " --------------------------------------------- " << endl;
   cout << " number of events processed  " << _evt_run << endl; 
   cout << " Last Event number # " << _evtNum << endl; 
   cout << " --------------------------------------------- " << endl;
-
 }
 
 //define this as a plug-in
