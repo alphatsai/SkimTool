@@ -33,47 +33,11 @@
 #include "Geometry/Records/interface/CaloGeometryRecord.h"
 #include "Geometry/CaloEventSetup/interface/CaloTopologyRecord.h"
 
-//#include "DataFormats/Math/interface/deltaR.h"
-//#include "DataFormats/EgammaCandidates/interface/Photon.h"
-//#include "DataFormats/EgammaCandidates/interface/PhotonFwd.h"
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
 #include "RecoCaloTools/MetaCollections/interface/CaloRecHitMetaCollections.h"
-//#include "DataFormats/HcalRecHit/interface/HcalRecHitCollections.h"
-//#include "DataFormats/Common/interface/TriggerResults.h"
-//#include "DataFormats/DetId/interface/DetId.h"
-//#include "DataFormats/SiStripDetId/interface/TECDetId.h"
-//#include "DataFormats/EcalDetId/interface/ESDetId.h"
-//#include "DataFormats/EcalDetId/interface/EBDetId.h"
-//#include "DataFormats/EcalDetId/interface/EEDetId.h"
-
-//#include "DataFormats/Candidate/interface/Candidate.h"
-//#include "DataFormats/Math/interface/LorentzVector.h"
-
-//#include "RecoEcal/EgammaCoreTools/interface/EcalClusterLazyTools.h"
-//#include "RecoEgamma/EgammaIsolationAlgos/interface/EgammaRecHitIsolation.h"
-
-//#include "TrackingTools/TrackAssociator/interface/TrackDetectorAssociator.h"
-//#include "TrackingTools/TrackAssociator/interface/TrackAssociatorParameters.h"
-//#include "TrackingTools/TrajectoryState/interface/FreeTrajectoryState.h"
 
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
-//#include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
-//#include "MagneticField/Engine/interface/MagneticField.h"
-//#include "TrackingTools/TransientTrack/interface/TransientTrack.h"
-//#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
-//#include "TrackingTools/Records/interface/TransientTrackRecord.h"
-//#include "DataFormats/GeometrySurface/interface/BoundPlane.h"
-//#include "Geometry/CommonDetUnit/interface/GlobalTrackingGeometry.h"
-//#include "TrackingTools/GeomPropagators/interface/AnalyticalPropagator.h"
-//#include "TrackPropagation/SteppingHelixPropagator/interface/SteppingHelixPropagator.h"
-
-//ROOT includes
-//#include <Math/VectorUtil.h>
-//#include <TLorentzVector.h>
-//#include <TH1F.h>
-//#include <TH1D.h>
-//#include <TH2F.h>
 
 #define GEN 0
 
@@ -83,13 +47,9 @@ using namespace std;
 // constructors and destructor
 //
 ESHitSkimLoose::ESHitSkimLoose(const edm::ParameterSet& iConfig)
-//  :
-//  verboseLevel_(0),
-//  helper_(iConfig)
 {
  std::cout<<"In ESHitSkimLoose Constructor\n";
   _evt_run = 0;
-
 }
 
 
@@ -130,16 +90,6 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
 
   }
 
-  //for cluster shape //[Alpha] No need so far 
-  //ESHandle<CaloGeometry> caloGeometry;
-  //iSetup.get<CaloGeometryRecord>().get(caloGeometry);
-  //const CaloGeometry *caloGeom = caloGeometry.product();
-  //ESHandle<MagneticField> theMagField; 
-  //iSetup.get<IdealMagneticFieldRecord>().get(theMagField); 
-  //ESHandle<GlobalTrackingGeometry> theTrackingGeometry; 
-  //iSetup.get<GlobalTrackingGeometryRecord>().get( theTrackingGeometry ); 
-
- 
   // Get ES rechits
   edm::Handle<EcalRecHitCollection> PreshowerRecHits;
   evt.getByLabel(InputTag("ecalPreshowerRecHit","EcalRecHitsES"), PreshowerRecHits);
@@ -152,6 +102,7 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
   { Nesrh++; break; }
 
 
+  // Get reco Tracks 
   edm::Handle<reco::TrackCollection>   TrackCol;
   evt.getByLabel( "generalTracks",      TrackCol );
 
@@ -178,17 +129,12 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
         _TrackOuterEta[Ntrack]=itTrack->outerEta();
         _TrackOuterPhi[Ntrack]=itTrack->outerPhi();
 
-     if( _TrackPt[Ntrack]>1. //&& _TrackPtError[Ntrack]<2.
-         //&& itTrack->d0Error()<0.003
+     if( _TrackPt[Ntrack]>1.
         &&fabs(itTrack->outerZ())>260&&fabs(itTrack->outerZ())<280
         &&fabs(_TrackEta[Ntrack])<2.3&&fabs(_TrackEta[Ntrack])>1.7
         &&_TrackNHit[Ntrack]>=10
         &&((_TrackQuality[Ntrack])%8)>=4
-        //&&_TrackNHit[Ntrack]>=5
-       )
-     {
-      Ntrack++; break;
-     }//end if TrackPt>1
+       ){ Ntrack++; break; }//end if TrackPt>1
     }//charge!=0
   }
 

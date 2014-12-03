@@ -11,23 +11,15 @@
 
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
-//#include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/Framework/interface/EDFilter.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
-//#include "FWCore/ParameterSet/interface/InputTag.h"
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 
-
 // ROOT include files
 #include "TROOT.h"
-//#include <TFile.h>
-//#include <TTree.h>
-//#include <TH1F.h>
-//#include <TH1D.h>
-//#include <TH2F.h>
 
 //
 // class declaration
