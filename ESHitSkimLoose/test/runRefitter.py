@@ -1,9 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("REFIT")
-
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
-
 process.load('Configuration.StandardSequences.GeometryDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff')
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
@@ -38,11 +36,9 @@ process.TrackRefitter.constraint = ""
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1)
 )
-
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
 	'file:JET2011A_ESSkim_P1.root'
-
   )
 )
 
@@ -52,10 +48,7 @@ process.out = cms.OutputModule("PoolOutputModule",
 )
 
 process.p = cms.EndPath(process.out)
-
-
 #process.p1 = cms.Path(process.doConstraint * process.TrackRefitter} 
 process.p1 = cms.Path(process.TrackRefitter) 
-
 process.schedule = cms.Schedule( process.p1 , process.p)
 
