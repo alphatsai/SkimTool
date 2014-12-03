@@ -52,25 +52,17 @@ ESHitSkimLoose::ESHitSkimLoose(const edm::ParameterSet& iConfig)
   _evt_run = 0;
 }
 
-
 ESHitSkimLoose::~ESHitSkimLoose()
 {
  std::cout<<"In ESHitSkimLoose destructor\n";
 }
 
-
-//
-// member functions
-//
-
 // ------------ method called to for each event  ------------
 bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
-//void ESHitSkimLoose::analyze( edm::Event & evt, const edm::EventSetup & iSetup )
 {
   using namespace edm;
   using namespace std;
 
-  //if ( verboseLevel_ > 10 )
     std::cout << "ESHitSkimLoose:: in analyze()." << std::endl;
   
   _runNum = evt.id().run();
@@ -113,21 +105,21 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
   {    
     if ( itTrack->charge()!=0 )
     {
-	_TrackPt[Ntrack] = itTrack->pt(); 
+	_TrackPt[Ntrack]  = itTrack->pt(); 
 	_TrackEta[Ntrack] = itTrack->eta(); 
 	_TrackPhi[Ntrack] = itTrack->phi(); 
-	_TrackVx[Ntrack] = itTrack->vx(); 
-	_TrackVy[Ntrack] = itTrack->vy(); 
-	_TrackVz[Ntrack] = itTrack->vz(); 
+	_TrackVx[Ntrack]  = itTrack->vx(); 
+	_TrackVy[Ntrack]  = itTrack->vy(); 
+	_TrackVz[Ntrack]  = itTrack->vz(); 
+        _Trackd0[Ntrack]  = itTrack->d0(); 
 	_TrackCharge[Ntrack] = itTrack->charge(); 
-        _Trackd0[Ntrack]=itTrack->d0(); 
-        _TrackNHit[Ntrack]=itTrack->found(); 
-        _TrackNChi2[Ntrack]=itTrack->normalizedChi2(); 
-        _TrackPtError[Ntrack]=itTrack->ptError();
-        _TrackQuality[Ntrack]=itTrack->qualityMask();
-        _TrackOuterZ[Ntrack]=itTrack->outerZ();
-        _TrackOuterEta[Ntrack]=itTrack->outerEta();
-        _TrackOuterPhi[Ntrack]=itTrack->outerPhi();
+        _TrackNHit[Ntrack]   = itTrack->found(); 
+        _TrackNChi2[Ntrack]  = itTrack->normalizedChi2(); 
+        _TrackPtError[Ntrack]= itTrack->ptError();
+        _TrackQuality[Ntrack]= itTrack->qualityMask();
+        _TrackOuterZ[Ntrack] = itTrack->outerZ();
+        _TrackOuterEta[Ntrack] = itTrack->outerEta();
+        _TrackOuterPhi[Ntrack] = itTrack->outerPhi();
 
      if( _TrackPt[Ntrack]>1.
         &&fabs(itTrack->outerZ())>260&&fabs(itTrack->outerZ())<280
@@ -144,10 +136,6 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
 
 }
 
-
-
-
-
 // ------------ method called once each job just before starting event loop  ------------
 void
 ESHitSkimLoose::beginJob()
@@ -156,8 +144,6 @@ ESHitSkimLoose::beginJob()
  std::cout<<"In ESHitSkimLoose.beginJob\n";
 
 }
-
-
 
 // ------------ method called once each job just after ending the event loop  ------------
 void
