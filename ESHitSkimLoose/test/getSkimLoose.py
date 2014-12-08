@@ -12,7 +12,8 @@ process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 ################### Input file #############################
 from inputFiles_cfi import * #FileNames
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring(FileNames)
+    fileNames = cms.untracked.vstring(FileNames_PionGunTest)
+    #fileNames = cms.untracked.vstring(FileNames)
     #fileNames = cms.untracked.vstring('file:/data/chiyi/ESAlignment/CMSSW_4_1_2/src/DATAFiles/JetPD2011A_PromptReco-v1/DAACC74C-DF57-E011-A45D-001D09F2B30B.root')
 )
 process.maxEvents = cms.untracked.PSet(
@@ -37,7 +38,7 @@ process.out = cms.OutputModule("PoolOutputModule",
        'keep *_siPixelClusters_*_*',
        'keep *_siStripClusters_*_*',
       ),
-     fileName = cms.untracked.string('JET2011A_ESSkim_P1.root')
+     fileName = cms.untracked.string('ESSkim.root')
 )
  
 process.p = cms.EndPath(process.out)
