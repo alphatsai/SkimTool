@@ -1,0 +1,4 @@
+# Dataset_name    Number_of_jobs    EOS_location    PyCfg_parameters (optional)
+#/job_SinglePionGun_GEN_SIM_v1/tdoan-job_SinglePionGun_RECO_v1-a2645d794d4263c6295ef839881df757/USER  1  /eos/cms/store/user/jtsai/test/SinglePionGun_RECO_POSTLS170_V5_MaxEvents1M 
+#job_SinglePionGun_GEN_SIM_v1/tdoan-job_SinglePionGun_RECO_v1-a2645d794d4263c6295ef839881df757/USER  10  /eos/cms/store/user/jtsai/ESAlignment/SinglePionGun_RECO_POSTLS170_V5_MaxEvents1M 
+Skim_SinglePionGun_RECO_POSTLS170_V5_MaxEvents1M  50  /eos/cms/store/user/jtsai/ESAlignment/SinglePionGun_RECO_POSTLS170_V5_MaxEvents1M 
