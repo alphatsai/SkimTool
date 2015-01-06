@@ -27,7 +27,7 @@ protected:
   virtual void endJob() ;
 
   int _evt_run; 
-  int _runNum, _evtNum;
+  int _runNum, _evtNum, _restEvt;
   int Nesrh; 
   int Ntrack; 
   Double_t _TrackPt[10], _TrackEta[10], _TrackPhi[10]; 

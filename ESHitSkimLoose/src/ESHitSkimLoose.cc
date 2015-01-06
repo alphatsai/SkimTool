@@ -43,6 +43,7 @@ ESHitSkimLoose::ESHitSkimLoose(const edm::ParameterSet& iConfig)
 {
  std::cout<<"In ESHitSkimLoose Constructor\n";
   _evt_run = 0;
+  _restEvt = 0;
 }
 
 ESHitSkimLoose::~ESHitSkimLoose()
@@ -82,14 +83,25 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
   //EcalRecHitCollection::const_iterator esrh_it;
   //for ( esrh_it = ESRH->begin(); esrh_it != ESRH->end(); esrh_it++){ Nesrh++; break; }
   Nesrh=PreshowerRecHits->size();
+  cout << " number of Hits " << Nesrh << endl;
 
   // Get reco Tracks 
   edm::Handle<reco::TrackCollection>   TrackCol;
   evt.getByLabel( "generalTracks",      TrackCol );
-  cout << " number of tracks " << TrackCol->size() << endl;
   for(reco::TrackCollection::const_iterator itTrack = TrackCol->begin();
       itTrack != TrackCol->end(); ++itTrack)
   {    
+	cout<<endl;
+	cout<<"charge !=0 "<<itTrack->charge()<<endl;
+	cout<<"_TrackPt > 1. "<<itTrack->pt()<<endl;
+	cout<<"fabs(itTrack->outerZ()) > 260 "<<fabs(itTrack->outerZ())<<endl;
+	cout<<"fabs(itTrack->outerZ()) < 280 "<<fabs(itTrack->outerZ())<<endl;
+	cout<<"fabs(_TrackEta[Ntrack]) > 1.7 "<<fabs(itTrack->eta())<<endl;
+	cout<<"fabs(_TrackEta[Ntrack]) < 2.3 "<<fabs(itTrack->eta())<<endl;
+	cout<<"_TrackNHit[Ntrack] >= 10 "<<itTrack->numberOfValidHits()<<endl;
+	//cout<<"_TrackNHit[Ntrack] >= 10 "<<itTrack->found()<<endl;
+	cout<<"((_TrackQuality[Ntrack])%8) >= 4 "<<(itTrack->qualityMask())%8<<endl;
+	//cout<<"quality "<<itTrack->quality(reco::TrackBase::qualityByName("highPurity"))<<endl;
     if ( itTrack->charge()!=0 )
     {
 	_TrackPt[Ntrack]  = itTrack->pt(); 
@@ -100,7 +112,8 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
 	_TrackVz[Ntrack]  = itTrack->vz(); 
         _Trackd0[Ntrack]  = itTrack->d0(); 
 	_TrackCharge[Ntrack] = itTrack->charge(); 
-        _TrackNHit[Ntrack]   = itTrack->found(); 
+        //_TrackNHit[Ntrack]   = itTrack->found(); 
+        _TrackNHit[Ntrack]   = itTrack->numberOfValidHits(); 
         _TrackNChi2[Ntrack]  = itTrack->normalizedChi2(); 
         _TrackPtError[Ntrack]= itTrack->ptError();
         _TrackQuality[Ntrack]= itTrack->qualityMask();
@@ -113,10 +126,13 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
         &&fabs(_TrackEta[Ntrack])<2.3&&fabs(_TrackEta[Ntrack])>1.7
         &&_TrackNHit[Ntrack]>=10
         &&((_TrackQuality[Ntrack])%8)>=4
-       ){ Ntrack++; break; }//end if TrackPt>1
+       ){ Ntrack++; //break; 
+	}//end if TrackPt>1
     }//charge!=0
   }
+  cout << " number of good tracks " << Ntrack << "/"<< TrackCol->size() << endl;
 
+  if( Nesrh>0 && Ntrack>0 ) _restEvt++;  
   if( Nesrh>0 && Ntrack>0 ) return true;  
   return false;
 }
@@ -136,6 +152,7 @@ ESHitSkimLoose::endJob() {
   cout << " --------------------------------------------- " << endl;
   cout << " number of events processed  " << _evt_run << endl; 
   cout << " Last Event number # " << _evtNum << endl; 
+  cout << " Skimed Event number # " << _restEvt << endl; 
   cout << " --------------------------------------------- " << endl;
 }
 
