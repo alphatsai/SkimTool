@@ -30,7 +30,7 @@
 #include "Geometry/Records/interface/CaloGeometryRecord.h"
 #include "Geometry/CaloEventSetup/interface/CaloTopologyRecord.h"
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
-#include "RecoCaloTools/MetaCollections/interface/CaloRecHitMetaCollections.h"
+//#include "RecoCaloTools/MetaCollections/interface/CaloRecHitMetaCollections.h"
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
 #define GEN 0
@@ -77,11 +77,11 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
   // Get ES rechits
   edm::Handle<EcalRecHitCollection> PreshowerRecHits;
   evt.getByLabel(InputTag("ecalPreshowerRecHit","EcalRecHitsES"), PreshowerRecHits);
-  if( PreshowerRecHits.isValid() ) EcalRecHitMetaCollection preshowerHits(*PreshowerRecHits);  
-  const ESRecHitCollection *ESRH = PreshowerRecHits.product();
-  EcalRecHitCollection::const_iterator esrh_it;
- 
-  for ( esrh_it = ESRH->begin(); esrh_it != ESRH->end(); esrh_it++){ Nesrh++; break; }
+  //if( PreshowerRecHits.isValid() ) EcalRecHitMetaCollection preshowerHits(*PreshowerRecHits);  
+  //const ESRecHitCollection *ESRH = PreshowerRecHits.product();
+  //EcalRecHitCollection::const_iterator esrh_it;
+  //for ( esrh_it = ESRH->begin(); esrh_it != ESRH->end(); esrh_it++){ Nesrh++; break; }
+  Nesrh=PreshowerRecHits->size();
 
   // Get reco Tracks 
   edm::Handle<reco::TrackCollection>   TrackCol;
