@@ -1,2 +1,3 @@
 Submit and save to EOS 
+skim done!
 ./createAndSubmitJobs.py -w 08Dec_Skim -d datasetList.txt -c ../getSkimLoose.py -E /eos/cms/store/user/jtsai/ESAlignment
