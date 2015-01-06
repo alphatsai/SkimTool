@@ -21,7 +21,7 @@ process.source = cms.Source("PoolSource",
     #fileNames = cms.untracked.vstring(FileNames_PionGunTest)
 )
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(5)
+    input = cms.untracked.int32(-1)
 )
 
 ################### Define process #########################
