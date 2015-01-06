@@ -11,17 +11,17 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
 process.load("RecoTracker.TrackProducer.TrackRefitters_cff")
-#process.TrackRefitter.constraint = ""
+process.TrackRefitter.NavigationSchool = ""
 
 ################### Input file #############################
 from inputFiles_cfi import * #FileNames
 process.source = cms.Source("PoolSource",
-    #fileNames = cms.untracked.vstring(FileNames)
+    fileNames = cms.untracked.vstring(FileNames)
     #fileNames = cms.untracked.vstring(FileNames_SkimPionGun)
-    fileNames = cms.untracked.vstring(FileNames_PionGunTest)
+    #fileNames = cms.untracked.vstring(FileNames_PionGunTest)
 )
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(2)
+    input = cms.untracked.int32(5)
 )
 
 ################### Define process #########################
