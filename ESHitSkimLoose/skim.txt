@@ -1,9 +1,0 @@
-[?1034hType                                  Module                  Label             Process   
-------------------------------------------------------------------------------------------
-edm::OwnVector<TrackingRecHit,edm::ClonePolicy<TrackingRecHit> >    "generalTracks"         ""                "RECO"    
-edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> >    "ecalPreshowerRecHit"   "EcalRecHitsES"   "RECO"    
-edmNew::DetSetVector<SiPixelCluster>    "siPixelClusters"       ""                "RECO"    
-edmNew::DetSetVector<SiStripCluster>    "siStripClusters"       ""                "RECO"    
-reco::BeamSpot                        "offlineBeamSpot"       ""                "RECO"    
-vector<reco::Track>                   "generalTracks"         ""                "RECO"    
-vector<reco::TrackExtra>              "generalTracks"         ""                "RECO"    
