@@ -1,3 +1,14 @@
 Working CMSSW Version
 	CMSSW_7_0_X
 Test was done in CMSSW_7_0_7
+
+Event contents after skim
+Type                                  Module                  Label             Process   
+------------------------------------------------------------------------------------------
+edm::OwnVector<TrackingRecHit,edm::ClonePolicy<TrackingRecHit> >    "generalTracks"         ""                "RECO"    
+edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> >    "ecalPreshowerRecHit"   "EcalRecHitsES"   "RECO"    
+edmNew::DetSetVector<SiPixelCluster>    "siPixelClusters"       ""                "RECO"    
+edmNew::DetSetVector<SiStripCluster>    "siStripClusters"       ""                "RECO"    
+reco::BeamSpot                        "offlineBeamSpot"       ""                "RECO"    
+vector<reco::Track>                   "generalTracks"         ""                "RECO"    
+vector<reco::TrackExtra>              "generalTracks"         ""                "RECO" 
