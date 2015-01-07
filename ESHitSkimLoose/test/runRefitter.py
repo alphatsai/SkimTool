@@ -10,6 +10,7 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 #process.GlobalTag.globaltag = 'POSTLS170_V6::All'
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
+#process.load("RecoTracker.MeasurementDet.MeasurementTrackerEventProducer_cfi") #NEW!! 
 process.load("RecoTracker.TrackProducer.TrackRefitters_cff")
 process.TrackRefitter.NavigationSchool = ""
 
@@ -31,6 +32,8 @@ process.out = cms.OutputModule("PoolOutputModule",
 )
 
 process.p = cms.EndPath(process.out)
-process.p1 = cms.Path(process.TrackRefitter) 
+process.p1 = cms.Path(process.TrackRefitter)
+#process.p1 = cms.Path(process.MeasurementTrackerEvent #NEW!!
+#                     *process.TrackRefitter)  
 process.schedule = cms.Schedule( process.p1 , process.p)
 
