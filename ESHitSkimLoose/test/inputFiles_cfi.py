@@ -11,3 +11,6 @@ FileNames_SkimPionGun = [
 	'root://eoscms//eos/cms/store/user/jtsai/ESAlignment/Skim_SinglePionGun_RECO_POSTLS170_V5_MaxEvents1M/ESSkim_8.root',
 	#'root://eoscms//eos/cms/store/user/jtsai/ESAlignment/Skim_SinglePionGun_RECO_POSTLS170_V5_MaxEvents1M/ESSkim_9.root',
 ]
+FileNames_SkimNewPionGun = [
+	'root://eoscms//eos/cms/store/user/jtsai/ESAlignment/SkimNew_SinglePionGun_RECO_POSTLS170_V5_MaxEvents1M/ESSkim_9.root',
+]

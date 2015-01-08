@@ -37,6 +37,7 @@ process.out = cms.OutputModule("PoolOutputModule",
        'keep *_offlineBeamSpot_*_*',
        'keep *_siPixelClusters_*_*',
        'keep *_siStripClusters_*_*',
+       'keep *_siStripDigis_*_*', #NEW!!
       ),
      fileName = cms.untracked.string('ESSkim.root')
 )
