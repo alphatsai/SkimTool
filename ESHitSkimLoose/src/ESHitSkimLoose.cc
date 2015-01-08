@@ -11,10 +11,7 @@
      <Notes on implementation>
 */
 //
-// Original Author:  Kai-Yi KAO
-//         Created:  Sat Jan 30 13:11:07 CET 2010
-// $Id: ESHitSkimLoose.cc,v 1.2 2011/05/10 16:13:41 chiyi Exp $
-//
+// Author: Jui-Fa 
 //
 
 #include "SkimTool/ESHitSkimLoose/interface/ESHitSkimLoose.h"
@@ -30,7 +27,6 @@
 #include "Geometry/Records/interface/CaloGeometryRecord.h"
 #include "Geometry/CaloEventSetup/interface/CaloTopologyRecord.h"
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
-//#include "RecoCaloTools/MetaCollections/interface/CaloRecHitMetaCollections.h"
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
 #define GEN 0
@@ -78,10 +74,6 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
   // Get ES rechits
   edm::Handle<EcalRecHitCollection> PreshowerRecHits;
   evt.getByLabel(InputTag("ecalPreshowerRecHit","EcalRecHitsES"), PreshowerRecHits);
-  //if( PreshowerRecHits.isValid() ) EcalRecHitMetaCollection preshowerHits(*PreshowerRecHits);  
-  //const ESRecHitCollection *ESRH = PreshowerRecHits.product();
-  //EcalRecHitCollection::const_iterator esrh_it;
-  //for ( esrh_it = ESRH->begin(); esrh_it != ESRH->end(); esrh_it++){ Nesrh++; break; }
   Nesrh=PreshowerRecHits->size();
   cout << " number of Hits " << Nesrh << endl;
 
@@ -91,16 +83,6 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
   for(reco::TrackCollection::const_iterator itTrack = TrackCol->begin();
       itTrack != TrackCol->end(); ++itTrack)
   {
-	/*cout<<endl;
-	cout<<"charge !=0 "<<itTrack->charge()<<endl;
-	cout<<"_TrackPt > 1. "<<itTrack->pt()<<endl;
-	cout<<"fabs(itTrack->outerZ()) > 260 "<<fabs(itTrack->outerZ())<<endl;
-	cout<<"fabs(itTrack->outerZ()) < 280 "<<fabs(itTrack->outerZ())<<endl;
-	cout<<"fabs(_TrackEta[Ntrack]) > 1.7 "<<fabs(itTrack->eta())<<endl;
-	cout<<"fabs(_TrackEta[Ntrack]) < 2.3 "<<fabs(itTrack->eta())<<endl;
-	cout<<"_TrackNHit[Ntrack] >= 10 "<<itTrack->numberOfValidHits()<<endl;
-	cout<<"((_TrackQuality[Ntrack])%8) >= 4 "<<(itTrack->qualityMask())%8<<endl;
-	cout<<"quality "<<itTrack->quality(reco::TrackBase::qualityByName("highPurity"))<<endl;*/
     if ( itTrack->charge()!=0 )
     {
 	_TrackPt[Ntrack]  = itTrack->pt(); 
@@ -111,7 +93,6 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
 	_TrackVz[Ntrack]  = itTrack->vz(); 
         _Trackd0[Ntrack]  = itTrack->d0(); 
 	_TrackCharge[Ntrack] = itTrack->charge(); 
-        //_TrackNHit[Ntrack]   = itTrack->found(); 
         _TrackNHit[Ntrack]   = itTrack->numberOfValidHits(); 
         _TrackNChi2[Ntrack]  = itTrack->normalizedChi2(); 
         _TrackPtError[Ntrack]= itTrack->ptError();
@@ -125,7 +106,6 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
         &&fabs(_TrackEta[Ntrack])<2.3&&fabs(_TrackEta[Ntrack])>1.7
         &&_TrackNHit[Ntrack]>=10
         &&itTrack->quality(reco::TrackBase::qualityByName("highPurity"))
-        //&&((_TrackQuality[Ntrack])%8)>=4
        ){ Ntrack++; break; }//end if TrackPt>1
     }//charge!=0
   }
