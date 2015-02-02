@@ -6,9 +6,19 @@ process.load('Configuration.StandardSequences.GeometryDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff')
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 
-########## Change to new global tag ###############
-#process.GlobalTag.globaltag = 'POSTLS170_V6::All'
+###################### Modify following Global tag ################################
+######################       This is example       ################################
+#	https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideFrontierConditions
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
+### Add or change spacial parameters from DB
+#process.TrackerAlignment2009 = cms.ESSource("PoolDBESSource",
+#                                          process.CondDBSetup,
+#                                          connect = cms.string('frontier://PromptProd/CMS_COND_31X_ALIGNMENT'),
+#                                          toGet= cms.VPSet(cms.PSet(record = cms.string("TrackerAlignmentRcd"),
+#                                                                     tag = cms.string('TrackerAlignment_2009_v1_prompt'))
+#                                                           )
+#					 )
+#process.es_prefer_TrackerAlignment2009 = cms.ESPrefer("PoolDBESSource", "TrackerAlignment2009")
 
 #process.load("RecoTracker.MeasurementDet.MeasurementTrackerEventProducer_cfi") #NEW!! 
 process.load("RecoTracker.TrackProducer.TrackRefitters_cff")
