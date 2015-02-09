@@ -19,7 +19,7 @@ process.source = cms.Source("PoolSource",
     #fileNames = cms.untracked.vstring('file:/data/chiyi/ESAlignment/CMSSW_4_1_2/src/DATAFiles/JetPD2011A_PromptReco-v1/DAACC74C-DF57-E011-A45D-001D09F2B30B.root')
 )
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(2)
+    input = cms.untracked.int32(100)
 )
 
 ################### Define process #########################
@@ -37,7 +37,7 @@ process.out = cms.OutputModule("PoolOutputModule",
      outputCommands = cms.untracked.vstring('drop *',
        'keep *_ecalPreshowerRecHit_*_*',
        'keep *_ESTracksReducer_*_*',
-       'keep *_generalTracks_*_*',
+       #'keep *_generalTracks_*_*',
        'keep *_offlineBeamSpot_*_*',
        'keep *_siPixelClusters_*_*',
        'keep *_siStripClusters_*_*',
