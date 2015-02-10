@@ -77,8 +77,12 @@ void ESTracksReducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
      if( fabs(itTrack->eta())<3 && fabs(itTrack->eta())>1.5 ){
 	std::cout<<"No "<<Ntrack<<", Eta "<<itTrack->eta()<<", Keep!"<<endl;
         redGeneralTracksCollection->push_back(*itTrack);	
-	if(TrackExtraCol.isValid()) redGeneralTracksExtraCollection->push_back(*(itTrack->extra()));	
+	//if(TrackExtraCol.isValid()){ 
+	  // cout<<" TrackExtras is valided"<<endl;	
+	   redGeneralTracksExtraCollection->push_back(*(itTrack->extra()));	
+	//}
 	NECtrack++;
+
      }else{
 	std::cout<<"No "<<Ntrack<<", Eta "<<itTrack->eta()<<", Drop!"<<endl;
      }
