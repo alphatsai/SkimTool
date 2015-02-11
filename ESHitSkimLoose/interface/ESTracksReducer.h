@@ -26,11 +26,14 @@ protected:
 
   edm::InputTag generalTracksLabel_;
   edm::InputTag generalTracksExtraLabel_;
+  edm::InputTag trackingHitsLabel_;
   std::string redGeneralTrackCollection_; 
   std::string redGeneralTrackExtraCollection_; 
+  std::string redTrackingRecHitCollection_; 
  
   int evtRun_;
-  int restEvt_;
+  int totalTracks_;
+  int totalRedTracks_;
 
 };
 
