@@ -12,6 +12,8 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
+#include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/TrackReco/interface/TrackFwd.h"
 
 class ESTracksReducer : public edm::EDProducer
 {
@@ -20,9 +22,10 @@ public:
   virtual ~ESTracksReducer();
 
 protected:
-  virtual void beginJob() ;
+  virtual void beginJob();
   virtual void produce(edm::Event &, const edm::EventSetup & );
-  virtual void endJob() ;
+  virtual void endJob();
+  bool TrackSelection( reco::Track track ); 
 
   edm::InputTag generalTracksLabel_;
   edm::InputTag generalTracksExtraLabel_;

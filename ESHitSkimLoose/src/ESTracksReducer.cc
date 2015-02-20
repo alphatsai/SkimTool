@@ -24,7 +24,6 @@
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
 #include "DataFormats/TrackReco/interface/TrackExtra.h"
 #include "DataFormats/TrackReco/interface/TrackExtraFwd.h"
-#define GEN 0
 
 using namespace std;
 //
@@ -55,6 +54,13 @@ ESTracksReducer::~ESTracksReducer()
  std::cout<<"In ESTracksReducer destructor\n";
 }
 
+// ------------ additional functions  ------------
+bool ESTracksReducer::TrackSelection( reco::Track track )
+{
+	if( fabs(track.eta())<3 && fabs(track.eta())>1.5 ) return true;
+	else return false;
+}
+
 // ------------ method called to for each event  ------------
 void ESTracksReducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
@@ -67,52 +73,92 @@ void ESTracksReducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
   int NredTracks = 0; 
   evtRun_++;
 
-  // Get Tracks' infomaiton 
+  //* Get Tracks' infomaiton 
   edm::Handle<reco::TrackCollection> TrackCol;
   	iEvent.getByLabel(generalTracksLabel_,TrackCol);
   edm::Handle<reco::TrackExtraCollection> TrackExtraCol;
-   	iEvent.getByLabel(generalTracksExtraLabel_,TrackExtraCol);
+     	iEvent.getByLabel(generalTracksExtraLabel_,TrackExtraCol);
   edm::Handle<TrackingRecHitCollection> TrackingRecHitCol;
-   	iEvent.getByLabel(trackingHitsLabel_,TrackingRecHitCol);
+     	iEvent.getByLabel(trackingHitsLabel_,TrackingRecHitCol);
 
-  // Greate empty collection
+  //* Greate empty collection
   std::auto_ptr<reco::TrackCollection> 	    redGeneralTracksCollection(new reco::TrackCollection);
   std::auto_ptr<reco::TrackExtraCollection> redGeneralTracksExtraCollection(new reco::TrackExtraCollection);
   std::auto_ptr<TrackingRecHitCollection>   redTrackingRecHitCollection(new TrackingRecHitCollection);
 
-  // this is needed to get the ProductId of the TrackExtra and TrackingRecHit collections
-  reco::TrackExtraRefProd refTrackExtras    = const_cast<edm::Event&>( iEvent ).getRefBeforePut<reco::TrackExtraCollection>(redGeneralTrackExtraCollection_);
-  TrackingRecHitRefProd   refTrackingRecHit = const_cast<edm::Event&>( iEvent ).getRefBeforePut<TrackingRecHitCollection>(redTrackingRecHitCollection_);
- 
+  //* this is needed to get the ProductId of the TrackExtra and TrackingRecHit collections
+  //reco::TrackExtraRefProd refTrackExtras    = const_cast<edm::Event&>( iEvent ).getRefBeforePut<reco::TrackExtraCollection>(redGeneralTrackExtraCollection_);
+  //TrackingRecHitRefProd   refTrackingRecHit = const_cast<edm::Event&>( iEvent ).getRefBeforePut<TrackingRecHitCollection>(redTrackingRecHitCollection_);
+
   // Select tracks in end cap direction
-  if( TrackCol.isValid() ){
-	  for( reco::TrackCollection::const_iterator itTrack = TrackCol->begin(); itTrack != TrackCol->end(); ++itTrack)
-	  {
-		  if( fabs(itTrack->eta())<3 && fabs(itTrack->eta())>1.5 ){
-			  std::cout<<"No "<<Ntrack<<", Eta "<<itTrack->eta()<<", Keep!"<<endl;
-	   		  //Fill track and trackExtras	
-			  redGeneralTracksCollection->push_back(*itTrack);	
-			  redGeneralTracksExtraCollection->push_back(*(itTrack->extra()));	
-			  redGeneralTracksCollection->back().setExtra( reco::TrackExtraRef( refTrackExtras, redGeneralTracksExtraCollection->size()-1));
-			  NredTracks++;
-			  //Fill tracking rec hits, reference to trackExtras  
-			  for( trackingRecHit_iterator iHit = itTrack->recHitsBegin(); iHit != itTrack->recHitsEnd(); ++iHit){
-				redTrackingRecHitCollection->push_back(**iHit);
-			        redGeneralTracksExtraCollection->back().add( TrackingRecHitRef( refTrackingRecHit, redTrackingRecHitCollection->size()-1));
-			  }	
-		  }else{
-			  std::cout<<"No "<<Ntrack<<", Eta "<<itTrack->eta()<<", Drop!"<<endl;
-		  }
-		  Ntrack++;
+  Ntrack = TrackCol->size();
+  if( TrackCol.isValid() ){ 
+	  //* Fill new hits and new tracks
+	  for( reco::TrackCollection::const_iterator itTrack = TrackCol->begin(); itTrack != TrackCol->end(); ++itTrack){
+		  if( TrackSelection(*itTrack) ){
+			  reco::Track newTrack(*itTrack);   
+			  TrackingRecHitCollection newhits; 
+			  for (unsigned int iHit = 0; iHit < newTrack.recHitsSize(); iHit++) {
+				  TrackingRecHit *hit = itTrack->recHit(iHit)->clone();
+				  newTrack.setHitPattern(*hit, iHit);
+				  redTrackingRecHitCollection->push_back(hit);
+				  newhits.push_back(hit);
+			  }
+			  redGeneralTracksCollection->push_back(newTrack);
+		          NredTracks++;
+		  }	
 	  }
+	  edm::OrphanHandle <TrackingRecHitCollection> ohRH = iEvent.put( redTrackingRecHitCollection, redTrackingRecHitCollection_ );
+   
+	  //* connect new hits with trackExtra, and fill new tracksExtra
+	  int iRefRecHit=0;
+	  for( int iNewTrack = 0; iNewTrack < NredTracks; ++iNewTrack){
+		  reco::Track newTrack = redGeneralTracksCollection->at(iNewTrack);
+		  //reco::TrackExtra newTrackExtra;
+		  //* Only this way works to fill new trackExtra from new tracks
+		  redGeneralTracksExtraCollection->emplace_back(
+		        		newTrack.outerPosition(),
+                               		newTrack.outerMomentum(),
+                               		newTrack.outerOk(),
+                               		newTrack.innerPosition(),
+                               		newTrack.innerMomentum(),
+                               		newTrack.innerOk(),
+                               		newTrack.outerStateCovariance(),
+                               		newTrack.outerDetId(),
+                               		newTrack.innerStateCovariance(),
+                               		newTrack.innerDetId(),
+                               		newTrack.seedDirection(),
+                               		newTrack.seedRef()
+                               	);
+		  reco::TrackExtra newTrackExtra = redGeneralTracksExtraCollection->back(); 
+		  //* fill the TrackExtra with TrackingRecHitRef
+		  // unsigned int nHits = tracks->at(k).numberOfValidHits();
+		  unsigned int nHits = newTrack.recHitsSize();
+		  for (unsigned int iHit = 0; iHit < nHits; iHit++) {
+			  newTrackExtra.add(TrackingRecHitRef(ohRH,iRefRecHit));
+			  iRefRecHit++;
+		  }
+	  }	 
+	  edm::OrphanHandle<reco::TrackExtraCollection> ohTE = iEvent.put(redGeneralTracksExtraCollection, redGeneralTrackExtraCollection_);
+
+	  //* connect tracksExtra and tracks
+	  for( int iNewTrack = 0; iNewTrack < NredTracks; iNewTrack++){
+		  const reco::TrackExtraRef newTrackExtraRef(ohTE,iNewTrack);
+		  redGeneralTracksCollection->at(iNewTrack).setExtra(newTrackExtraRef);
+	  }
+  	  iEvent.put( redGeneralTracksCollection, redGeneralTrackCollection_ );
+
+  }else{
+	  iEvent.put( redGeneralTracksCollection, 	redGeneralTrackCollection_ );
+	  iEvent.put( redGeneralTracksExtraCollection, 	redGeneralTrackExtraCollection_);
+	  iEvent.put( redTrackingRecHitCollection, 	redTrackingRecHitCollection_);
+
   }
+
   totalTracks_+=Ntrack;
   totalRedTracks_+=NredTracks;
   cout << " number of EndCap tracks " << NredTracks << "/"<< Ntrack << endl;
 
-  iEvent.put( redGeneralTracksCollection, 	redGeneralTrackCollection_ );
-  iEvent.put( redGeneralTracksExtraCollection, 	redGeneralTrackExtraCollection_);
-  iEvent.put( redTrackingRecHitCollection, 	redTrackingRecHitCollection_);
 }
 
 // ------------ method called once each job just before starting event loop  ------------
