@@ -30,7 +30,6 @@
 #include "Geometry/Records/interface/CaloGeometryRecord.h"
 #include "Geometry/CaloEventSetup/interface/CaloTopologyRecord.h"
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
-//#include "RecoCaloTools/MetaCollections/interface/CaloRecHitMetaCollections.h"
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
 #define GEN 0
@@ -91,7 +90,7 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
   for(reco::TrackCollection::const_iterator itTrack = TrackCol->begin();
       itTrack != TrackCol->end(); ++itTrack)
   {
-	/*cout<<endl;
+	cout<<endl;
 	cout<<"charge !=0 "<<itTrack->charge()<<endl;
 	cout<<"_TrackPt > 1. "<<itTrack->pt()<<endl;
 	cout<<"fabs(itTrack->outerZ()) > 260 "<<fabs(itTrack->outerZ())<<endl;
@@ -100,7 +99,7 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
 	cout<<"fabs(_TrackEta[Ntrack]) < 2.3 "<<fabs(itTrack->eta())<<endl;
 	cout<<"_TrackNHit[Ntrack] >= 10 "<<itTrack->numberOfValidHits()<<endl;
 	cout<<"((_TrackQuality[Ntrack])%8) >= 4 "<<(itTrack->qualityMask())%8<<endl;
-	cout<<"quality "<<itTrack->quality(reco::TrackBase::qualityByName("highPurity"))<<endl;*/
+	cout<<"quality "<<itTrack->quality(reco::TrackBase::qualityByName("highPurity"))<<endl;
     if ( itTrack->charge()!=0 )
     {
 	_TrackPt[Ntrack]  = itTrack->pt(); 
@@ -121,10 +120,10 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
         _TrackOuterPhi[Ntrack] = itTrack->outerPhi();
 
      if( _TrackPt[Ntrack]>1.
-        &&fabs(itTrack->outerZ())>260&&fabs(itTrack->outerZ())<280
-        &&fabs(_TrackEta[Ntrack])<2.3&&fabs(_TrackEta[Ntrack])>1.7
-        &&_TrackNHit[Ntrack]>=10
-        &&itTrack->quality(reco::TrackBase::qualityByName("highPurity"))
+        && fabs(itTrack->outerZ())>260&&fabs(itTrack->outerZ())<280
+        && fabs(_TrackEta[Ntrack])<2.3&&fabs(_TrackEta[Ntrack])>1.7
+        && _TrackNHit[Ntrack]>=10
+        && itTrack->quality(reco::TrackBase::qualityByName("highPurity"))
         //&&((_TrackQuality[Ntrack])%8)>=4
        ){ Ntrack++; break; }//end if TrackPt>1
     }//charge!=0

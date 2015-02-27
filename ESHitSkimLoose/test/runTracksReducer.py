@@ -9,14 +9,17 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load("SkimTool.ESHitSkimLoose.ESTracksReducer_cfi")
 
 ################### global tag #############################
-process.GlobalTag.globaltag = 'POSTLS170_V5::All'
+#process.GlobalTag.globaltag = 'POSTLS170_V5::All'
+#process.GlobalTag.globaltag = 'GR_R_74_V1A::All'  #for RECO data CMSSW_7_4_0_pre6 with condition=auto::run2_data
+process.GlobalTag.globaltag = 'MCRUN2_74_V1::All'  #for RECO data CMSSW_7_4_0_pre6 with condition=auto::run2_data
 
 ################### Input file #############################
 from inputFiles_cfi import * #FileNames
 process.source = cms.Source("PoolSource",
-    #fileNames = cms.untracked.vstring(FileNames)
+    fileNames = cms.untracked.vstring(FileNames)
     #fileNames = cms.untracked.vstring(FileNames_PionGunTest)
-    fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/j/jtsai/generateSamples/CMSSW_7_4_0_pre6/src/DoubleElectron-Run2012D/reco_RAW2DIGI_RECO_100.root')
+    #fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/j/jtsai/generateSamples/CMSSW_7_4_0_pre6/src/DoubleElectron-Run2012D/reco_RAW2DIGI_RECO_100.root')
+    #fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/j/jtsai/generateSamples/CMSSW_7_4_0_pre6/src/DoubleElectron-Run2012D/reco_RAW2DIGI_RECO_400.root')
 )
 process.maxEvents = cms.untracked.PSet(
     #input = cms.untracked.int32(3)
