@@ -92,12 +92,20 @@ void ESTracksReducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 		//* Fill new hits and new tracks
 		for( reco::TrackCollection::const_iterator itTrack = TrackCol->begin(); itTrack != TrackCol->end(); ++itTrack){
 			if( TrackSelection(*itTrack) ){
+				// It's not clear if it's necessity for resetting hit pattern before filling new tracks. 
+				// However, the result is the same with filling tracks without resetting hit patten.
+				// So it may not need to reset hit pattern
+				// But here still keep the way doing resetting!
+				reco::Track newTrack(*itTrack);
+				newTrack.resetHitPattern();
 				int iHit=0;
 				for( trackingRecHit_iterator itHit = itTrack->recHitsBegin(); itHit != itTrack->recHitsEnd(); ++itHit){
+					newTrack.appendHitPattern(**itHit);
 					redTrackingRecHitCollection->push_back(**itHit);
 					iHit++;
 				}
-				redGeneralTracksCollection->push_back(*itTrack);
+				redGeneralTracksCollection->push_back(newTrack);
+				//redGeneralTracksCollection->push_back(*itTrack);
 				NredTracks++;
 			}	
 		}

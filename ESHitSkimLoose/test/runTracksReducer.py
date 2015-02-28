@@ -11,7 +11,7 @@ process.load("SkimTool.ESHitSkimLoose.ESTracksReducer_cfi")
 ################### global tag #############################
 #process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 #process.GlobalTag.globaltag = 'GR_R_74_V1A::All'  #for RECO data CMSSW_7_4_0_pre6 with condition=auto::run2_data
-process.GlobalTag.globaltag = 'MCRUN2_74_V1::All'  #for RECO data CMSSW_7_4_0_pre6 with condition=auto::run2_data
+process.GlobalTag.globaltag = 'MCRUN2_74_V1::All'  #for RECO MC CMSSW_7_4_0_pre6 with condition=auto::run2_mc
 
 ################### Input file #############################
 from inputFiles_cfi import * #FileNames
