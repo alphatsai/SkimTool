@@ -70,7 +70,7 @@ void ESTracksReducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	std::cout << "ESTracksReducer:: in analyze()." << std::endl;
 
 	int Ntrack = 0; 
-	int NredTracks = 0; 
+	int NnewTracks = 0; 
 	evtRun_++;
 
 	//* Get Tracks' infomaiton 
@@ -106,7 +106,7 @@ void ESTracksReducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 				}
 				newGeneralTracksCollection->push_back(newTrack);
 				//newGeneralTracksCollection->push_back(*itTrack);
-				NredTracks++;
+				NnewTracks++;
 			}	
 		}
 		edm::OrphanHandle <TrackingRecHitCollection> ohRH = iEvent.put( newTrackingRecHitCollection, newTrackingRecHitCollection_ );
@@ -114,7 +114,7 @@ void ESTracksReducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 		//* connect new hits with trackExtra, and fill new tracksExtra
 		int iRefRecHit=0;
-		for( int iNewTrack = 0; iNewTrack < NredTracks; ++iNewTrack){
+		for( int iNewTrack = 0; iNewTrack < NnewTracks; ++iNewTrack){
 			reco::Track newTrack = newGeneralTracksCollection->at(iNewTrack);
 			//* Only this way works to fill new trackExtra from new tracks
 			newGeneralTracksExtraCollection->emplace_back(
@@ -140,7 +140,7 @@ void ESTracksReducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 		edm::OrphanHandle<reco::TrackExtraCollection> ohTE = iEvent.put(newGeneralTracksExtraCollection, newGeneralTracksExtraCollection_);
 
 		//* connect tracksExtra and tracks
-		for( int iNewTrack = 0; iNewTrack < NredTracks; iNewTrack++){
+		for( int iNewTrack = 0; iNewTrack < NnewTracks; iNewTrack++){
 			const reco::TrackExtraRef newTrackExtraRef(ohTE,iNewTrack);
 			newGeneralTracksCollection->at(iNewTrack).setExtra(newTrackExtraRef);
 		}
@@ -154,8 +154,8 @@ void ESTracksReducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	}
 
 	totalTracks_+=Ntrack;
-	totalRedTracks_+=NredTracks;
-	cout << " number of EndCap tracks " << NredTracks << "/"<< Ntrack << endl;
+	totalRedTracks_+=NnewTracks;
+	cout << " number of EndCap tracks " << NnewTracks << "/"<< Ntrack << endl;
 
 }
 
