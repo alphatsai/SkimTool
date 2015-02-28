@@ -35,14 +35,14 @@ ESTracksReducer::ESTracksReducer(const edm::ParameterSet& iConfig)
 
 	generalTracksLabel_      = iConfig.getParameter< edm::InputTag >("generalTracksLabel");
 	generalTracksExtraLabel_ = iConfig.getParameter< edm::InputTag >("generalTracksExtraLabel");
-	trackingHitsLabel_       = iConfig.getParameter< edm::InputTag >("trackingHitsLabel");
-	redGeneralTrackCollection_      = iConfig.getParameter<std::string>("redGeneralTrackCollection");
-	redGeneralTrackExtraCollection_ = iConfig.getParameter<std::string>("redGeneralTrackExtraCollection");
-	redTrackingRecHitCollection_    = iConfig.getParameter<std::string>("redTrackingRecHitCollection");
+	trackingRecHitLabel_     = iConfig.getParameter< edm::InputTag >("trackingRecHitLabel");
+	newGeneralTracksCollection_      = iConfig.getParameter<std::string>("newGeneralTracksCollection");
+	newGeneralTracksExtraCollection_ = iConfig.getParameter<std::string>("newGeneralTracksExtraCollection");
+	newTrackingRecHitCollection_     = iConfig.getParameter<std::string>("newTrackingRecHitCollection");
 
-	produces<reco::TrackCollection>(redGeneralTrackCollection_);
-	produces<reco::TrackExtraCollection>(redGeneralTrackExtraCollection_); 
-	produces<TrackingRecHitCollection>(redTrackingRecHitCollection_); 
+	produces<reco::TrackCollection>(newGeneralTracksCollection_);
+	produces<reco::TrackExtraCollection>(newGeneralTracksExtraCollection_); 
+	produces<TrackingRecHitCollection>(newTrackingRecHitCollection_); 
 
 	evtRun_ = 0;
 	totalTracks_ = 0;
@@ -75,16 +75,16 @@ void ESTracksReducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	//* Get Tracks' infomaiton 
 	edm::Handle<reco::TrackCollection> TrackCol;
-	iEvent.getByLabel(generalTracksLabel_,TrackCol);
+		iEvent.getByLabel(generalTracksLabel_,TrackCol);
 	edm::Handle<reco::TrackExtraCollection> TrackExtraCol;
-	iEvent.getByLabel(generalTracksExtraLabel_,TrackExtraCol);
+		iEvent.getByLabel(generalTracksExtraLabel_,TrackExtraCol);
 	edm::Handle<TrackingRecHitCollection> TrackingRecHitCol;
-	iEvent.getByLabel(trackingHitsLabel_,TrackingRecHitCol);
+		iEvent.getByLabel(trackingRecHitLabel_,TrackingRecHitCol);
 
 	//* Greate empty collection
-	std::auto_ptr<reco::TrackCollection> 	    redGeneralTracksCollection(new reco::TrackCollection);
-	std::auto_ptr<reco::TrackExtraCollection> redGeneralTracksExtraCollection(new reco::TrackExtraCollection);
-	std::auto_ptr<TrackingRecHitCollection>   redTrackingRecHitCollection(new TrackingRecHitCollection);
+	std::auto_ptr<reco::TrackCollection> 	  newGeneralTracksCollection(new reco::TrackCollection);
+	std::auto_ptr<reco::TrackExtraCollection> newGeneralTracksExtraCollection(new reco::TrackExtraCollection);
+	std::auto_ptr<TrackingRecHitCollection>   newTrackingRecHitCollection(new TrackingRecHitCollection);
 
 	// Select tracks in end cap direction
 	Ntrack = TrackCol->size();
@@ -101,23 +101,23 @@ void ESTracksReducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 				int iHit=0;
 				for( trackingRecHit_iterator itHit = itTrack->recHitsBegin(); itHit != itTrack->recHitsEnd(); ++itHit){
 					newTrack.appendHitPattern(**itHit);
-					redTrackingRecHitCollection->push_back(**itHit);
+					newTrackingRecHitCollection->push_back(**itHit);
 					iHit++;
 				}
-				redGeneralTracksCollection->push_back(newTrack);
-				//redGeneralTracksCollection->push_back(*itTrack);
+				newGeneralTracksCollection->push_back(newTrack);
+				//newGeneralTracksCollection->push_back(*itTrack);
 				NredTracks++;
 			}	
 		}
-		edm::OrphanHandle <TrackingRecHitCollection> ohRH = iEvent.put( redTrackingRecHitCollection, redTrackingRecHitCollection_ );
+		edm::OrphanHandle <TrackingRecHitCollection> ohRH = iEvent.put( newTrackingRecHitCollection, newTrackingRecHitCollection_ );
 		edm::RefProd<TrackingRecHitCollection> ohRHProd(ohRH);
 
 		//* connect new hits with trackExtra, and fill new tracksExtra
 		int iRefRecHit=0;
 		for( int iNewTrack = 0; iNewTrack < NredTracks; ++iNewTrack){
-			reco::Track newTrack = redGeneralTracksCollection->at(iNewTrack);
+			reco::Track newTrack = newGeneralTracksCollection->at(iNewTrack);
 			//* Only this way works to fill new trackExtra from new tracks
-			redGeneralTracksExtraCollection->emplace_back(
+			newGeneralTracksExtraCollection->emplace_back(
 					newTrack.outerPosition(),
 					newTrack.outerMomentum(),
 					newTrack.outerOk(),
@@ -134,22 +134,22 @@ void ESTracksReducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 			//* fill the TrackExtra with TrackingRecHitRef
 			// unsigned int nHits = tracks->at(k).numberOfValidHits();
 			unsigned int nHits = newTrack.recHitsSize();
-			redGeneralTracksExtraCollection->back().setHits( ohRHProd, iRefRecHit, nHits);
+			newGeneralTracksExtraCollection->back().setHits( ohRHProd, iRefRecHit, nHits);
 			iRefRecHit += nHits;
 		}	 
-		edm::OrphanHandle<reco::TrackExtraCollection> ohTE = iEvent.put(redGeneralTracksExtraCollection, redGeneralTrackExtraCollection_);
+		edm::OrphanHandle<reco::TrackExtraCollection> ohTE = iEvent.put(newGeneralTracksExtraCollection, newGeneralTracksExtraCollection_);
 
 		//* connect tracksExtra and tracks
 		for( int iNewTrack = 0; iNewTrack < NredTracks; iNewTrack++){
 			const reco::TrackExtraRef newTrackExtraRef(ohTE,iNewTrack);
-			redGeneralTracksCollection->at(iNewTrack).setExtra(newTrackExtraRef);
+			newGeneralTracksCollection->at(iNewTrack).setExtra(newTrackExtraRef);
 		}
-		iEvent.put( redGeneralTracksCollection, redGeneralTrackCollection_ );
+		iEvent.put( newGeneralTracksCollection, newGeneralTracksCollection_ );
 
 	}else{
-		iEvent.put( redGeneralTracksCollection, 	redGeneralTrackCollection_ );
-		iEvent.put( redGeneralTracksExtraCollection, 	redGeneralTrackExtraCollection_);
-		iEvent.put( redTrackingRecHitCollection, 	redTrackingRecHitCollection_);
+		iEvent.put( newGeneralTracksCollection, 	newGeneralTracksCollection_ );
+		iEvent.put( newGeneralTracksExtraCollection, 	newGeneralTracksExtraCollection_);
+		iEvent.put( newTrackingRecHitCollection, 	newTrackingRecHitCollection_);
 
 	}
 

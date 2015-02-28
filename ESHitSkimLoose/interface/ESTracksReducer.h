@@ -29,10 +29,10 @@ protected:
 
   edm::InputTag generalTracksLabel_;
   edm::InputTag generalTracksExtraLabel_;
-  edm::InputTag trackingHitsLabel_;
-  std::string redGeneralTrackCollection_; 
-  std::string redGeneralTrackExtraCollection_; 
-  std::string redTrackingRecHitCollection_; 
+  edm::InputTag trackingRecHitLabel_;
+  std::string newGeneralTracksCollection_; 
+  std::string newGeneralTracksExtraCollection_; 
+  std::string newTrackingRecHitCollection_; 
  
   int evtRun_;
   int totalTracks_;
