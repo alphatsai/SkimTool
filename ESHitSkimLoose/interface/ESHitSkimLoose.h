@@ -30,17 +30,6 @@ protected:
   int _runNum, _evtNum, _restEvt;
   int Nesrh; 
   int Ntrack; 
-  Double_t _TrackPt[10], _TrackEta[10], _TrackPhi[10]; 
-  Double_t _TrackVx[10], _TrackVy[10], _TrackVz[10]; 
-  Double_t _TrackOuterZ[10]; 
-  Double_t _TrackOuterEta[10]; 
-  Double_t _TrackOuterPhi[10]; 
-  int _TrackNHit[10]; 
-  Double_t _TrackNChi2[10];  
-  int _TrackCharge[10]; 
-  float _Trackd0[10];
-  double _TrackPtError[10]; 
-  int _TrackQuality[10]; 
 };
 
 #endif
