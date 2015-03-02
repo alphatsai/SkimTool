@@ -24,7 +24,7 @@ process.GlobalTag.globaltag = 'GR_R_74_V1A::All'  #for RECO data CMSSW_7_4_0_pre
 #process.load("RecoTracker.MeasurementDet.MeasurementTrackerEventProducer_cfi") #NEW!! 
 process.load("RecoTracker.TrackProducer.TrackRefitters_cff")
 process.TrackRefitter.NavigationSchool = ""
-process.TrackRefitter.src = "ESTracksReducer" # Default is generalTracks
+process.TrackRefitter.src = "esGeneralTracks" # Default is generalTracks, changing depend on new collection from producer
 
 ################### Input file #############################
 from inputFiles_cfi import * #FileNames

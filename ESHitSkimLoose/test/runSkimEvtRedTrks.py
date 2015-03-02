@@ -1,11 +1,12 @@
 import FWCore.ParameterSet.Config as cms
 
-process = cms.Process("HITEVTSKIM")
+process = cms.Process("ESSKIM")
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.load('Configuration.StandardSequences.GeometryDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff')
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 
+process.load("SkimTool.ESHitSkimLoose.ESTracksReducer_cfi")
 process.load("SkimTool.ESHitSkimLoose.ESHitSkimLoose_cfi")
 
 ################### global tag #############################
@@ -24,8 +25,15 @@ process.maxEvents = cms.untracked.PSet(
 )
 
 ################### Define process #########################
-process.myFilter   = process.ESHitSkimLoose.clone() 
-process.myPath = cms.Path(process.myFilter)
+process.esGeneralTracks = process.ESTracksReducer.clone()
+process.myFilter = process.ESHitSkimLoose.clone() 
+process.myFilter.generalTracksLabel = 'esGeneralTracks'
+
+process.myPath = cms.Path( process.esGeneralTracks * # either + is ok
+			   process.myFilter 	)
+#process.myPath = cms.Path( process.myFilter * # either + is ok
+#			   process.esGeneralTracks )
+
 process.mySelection = cms.PSet(
  SelectEvents = cms.untracked.PSet(
        SelectEvents = cms.vstring('myPath')
@@ -35,17 +43,16 @@ process.out = cms.OutputModule("PoolOutputModule",
      process.mySelection,
      outputCommands = cms.untracked.vstring('drop *',
        'keep *_ecalPreshowerRecHit_*_*',
+       'keep *_ESTracksReducer_*_*',
        #'keep *_generalTracks_*_*',
-       'keep TrackingRecHitsOwned_generalTracks_*_*',
-       'keep recoTracks_generalTracks_*_*',
-       'keep recoTrackExtras_generalTracks_*_*',
+       'keep *_esGeneralTracks_*_*', # New collections from generalTracks 
        'keep *_offlineBeamSpot_*_*',
        'keep *_siPixelClusters_*_*',
        'keep *_siStripClusters_*_*',
        'keep *_siStripDigis_*_*', #NEW!!
       ),
-     fileName = cms.untracked.string('ESHitsEvtSkim.root')
+     fileName = cms.untracked.string('ESSkim.root')
 )
  
 process.p = cms.EndPath(process.out)
-process.schedule = cms.Schedule(process.myPath,process.p)
+process.schedule = cms.Schedule( process.myPath, process.p)

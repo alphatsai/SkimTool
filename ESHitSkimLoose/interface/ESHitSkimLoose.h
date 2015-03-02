@@ -29,7 +29,10 @@ protected:
   int _evt_run; 
   int _runNum, _evtNum, _restEvt;
   int Nesrh; 
-  int Ntrack; 
+  int Ntrack;
+
+  edm::InputTag generalTracksLabel_;	 
+  edm::InputTag esRecHitLabel_;	 
 };
 
 #endif

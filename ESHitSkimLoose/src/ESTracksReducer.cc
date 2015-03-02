@@ -67,7 +67,7 @@ void ESTracksReducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	using namespace edm;
 	using namespace std;
 
-	std::cout << "ESTracksReducer:: in analyze()." << std::endl;
+	std::cout << "ESTracksReducer:: in analyze(), Event: " <<evtRun_<<std::endl;
 
 	int Ntrack = 0; 
 	int NnewTracks = 0; 

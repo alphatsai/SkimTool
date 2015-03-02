@@ -2,11 +2,19 @@ runTracksReducer.py
 	Run EDProducer : ESTracksReducer.cc  
 	Select tracks to reduce the size of files 
 	Object name : TRKRED
-	Collection name : generalTracks -> ESTracksReducer 
+	Collection name : generalTracks -> esGeneralTracks 
 
 runSkimEvt.py
 	Run EDFilter : ESHitSkimLoose.cc
 	Select evts and objects to reduce the size of files
+
+runSkimEvtRedTrks.py 
+	Reduce the size of tracks and filt the events
+	Run EDProducer : ESTracksReducer.cc
+	Run EDFilter : ESHitSkimLoose.cc
+	EDProducer -> EDFilter 
+	Object name : ESSKIM
+	Collection name : generalTracks -> esGeneralTracks
 
 runRefitter.py
 	Refit tracks with new GT 

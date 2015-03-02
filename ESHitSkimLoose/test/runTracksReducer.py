@@ -17,6 +17,7 @@ process.GlobalTag.globaltag = 'GR_R_74_V1A::All'  #for RECO data CMSSW_7_4_0_pre
 from inputFiles_cfi import * #FileNames
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(FileNames)
+    #fileNames = cms.untracked.vstring('file:ESHitsEvtSkim.root')
     #fileNames = cms.untracked.vstring(FileNames_PionGunTest)
 )
 process.maxEvents = cms.untracked.PSet(
@@ -24,10 +25,8 @@ process.maxEvents = cms.untracked.PSet(
 )
 
 ################### Define process #########################
-#process.myFilter = cms.EDFilter('ESHitSkimLoose')
-#process.myfilter = cms.Sequence(process.myFilter)
-#process.myPath = cms.Path(process.ESTracksReducer, process.myfilter)
-process.myPath = cms.Path(process.ESTracksReducer)
+process.esGeneralTracks = process.ESTracksReducer.clone()
+process.myPath = cms.Path(process.esGeneralTracks)
 process.mySelection = cms.PSet(
  SelectEvents = cms.untracked.PSet(
        SelectEvents = cms.vstring('myPath')
@@ -37,7 +36,8 @@ process.out = cms.OutputModule("PoolOutputModule",
      process.mySelection,
      outputCommands = cms.untracked.vstring('drop *',
        'keep *_ecalPreshowerRecHit_*_*',
-       'keep *_ESTracksReducer_*_*',
+       'keep *_esGeneralTracks_*_*', # new collections from generalTracks
+       #'keep *_ESTracksReducer_*_*',
        #'keep *_generalTracks_*_*',
        'keep *_offlineBeamSpot_*_*',
        'keep *_siPixelClusters_*_*',

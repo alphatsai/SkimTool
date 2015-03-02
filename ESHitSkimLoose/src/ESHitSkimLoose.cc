@@ -33,9 +33,12 @@ using namespace std;
 //
 ESHitSkimLoose::ESHitSkimLoose(const edm::ParameterSet& iConfig)
 {
- std::cout<<"In ESHitSkimLoose Constructor\n";
-  _evt_run = 0;
-  _restEvt = 0;
+	 std::cout<<"In ESHitSkimLoose Constructor\n";
+	 generalTracksLabel_ = iConfig.getParameter< edm::InputTag >("generalTracksLabel");
+	 esRecHitLabel_      = iConfig.getParameter< edm::InputTag >("esRecHitLabel");
+
+	  _evt_run = 0;
+	  _restEvt = 0;
 }
 
 ESHitSkimLoose::~ESHitSkimLoose()
@@ -58,14 +61,14 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
 
   // Get ES rechits
   edm::Handle<EcalRecHitCollection> PreshowerRecHits;
-  	evt.getByLabel(InputTag("ecalPreshowerRecHit","EcalRecHitsES"), PreshowerRecHits);
+  	evt.getByLabel( esRecHitLabel_, PreshowerRecHits );
 
   Nesrh=PreshowerRecHits->size();
   cout << " number of ES Hits " << Nesrh << endl;
 
   // Get reco Tracks 
   edm::Handle<reco::TrackCollection>   TrackCol;
-  	evt.getByLabel( "generalTracks",      TrackCol );
+  	evt.getByLabel( generalTracksLabel_, TrackCol );
 
   for(reco::TrackCollection::const_iterator itTrack = TrackCol->begin();
       itTrack != TrackCol->end(); ++itTrack)
