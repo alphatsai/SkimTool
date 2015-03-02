@@ -1,0 +1,13 @@
+runTracksReducer.py
+	Run EDProducer : ESTracksReducer.cc  
+	Select tracks to reduce the size of files 
+	Object name : TRKRED
+	Collection name : generalTracks -> ESTracksReducer 
+
+runSkimEvt.py
+	Run EDFilter : ESHitSkimLoose.cc
+	Select evts and objects to reduce the size of files
+
+runRefitter.py
+	Refit tracks with new GT 
+	Please check the collection name of tracks and change src in configure file
