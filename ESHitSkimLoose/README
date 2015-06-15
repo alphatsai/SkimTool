@@ -12,3 +12,15 @@ edmNew::DetSetVector<SiStripCluster>    "siStripClusters"       ""              
 reco::BeamSpot                        "offlineBeamSpot"       ""                "RECO"    
 vector<reco::Track>                   "generalTracks"         ""                "RECO"    
 vector<reco::TrackExtra>              "generalTracks"         ""                "RECO" 
+
+
+ALCA ES stream 
+Type                                  Module                      Label             Process
+----------------------------------------------------------------------------------------------
+edm::EDCollection<DetId>              "siStripDigis"              ""                "RECO"
+edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> >    "ecalPreshowerRecHit"       "EcalRecHitsES"   "RECO"
+reco::BeamSpot                        "offlineBeamSpot"           ""                "RECO"
+edm::OwnVector<TrackingRecHit,edm::ClonePolicy<TrackingRecHit> >    "ecalAlCaESAlignTrackReducer"   "trackingRecHits"   "ALCA"
+vector<reco::Track>                   "ecalAlCaESAlignTrackReducerBis"   ""                "ALCA"
+vector<reco::Track>                   "ecalAlCaESAlignTrackReducer"   "generalTracks"   "ALCA"
+vector<reco::TrackExtra>              "ecalAlCaESAlignTrackReducer"   "generalTracksExtra"   "ALCA"
