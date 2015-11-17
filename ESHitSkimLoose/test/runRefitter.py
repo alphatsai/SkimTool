@@ -1,16 +1,20 @@
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("REFIT")
+#process.load('Configuration.StandardSequences.GeometryDB_cff')
+#process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
-process.load('Configuration.StandardSequences.GeometryDB_cff')
+process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff')
-process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 
 ###################### Modify following Global tag ################################
 ######################       This is example       ################################
 #	https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideFrontierConditions
-#process.GlobalTag.globaltag = 'POSTLS170_V5::All'
-process.GlobalTag.globaltag = 'GR_R_74_V1A::All'  #for RECO data CMSSW_7_4_0_pre6 with condition=auto::run2_data
+from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
+process.GlobalTag = GlobalTag(process.GlobalTag, '74X_dataRun2_Candidate_2015_10_09_09_41_36', '')
+#process.GlobalTag = GlobalTag(process.GlobalTag, '74X_dataRun2_Prompt_v2', '')
+
 ### Add or change spacial parameters from DB
 #process.TrackerAlignment2009 = cms.ESSource("PoolDBESSource",
 #                                          process.CondDBSetup,
@@ -24,7 +28,8 @@ process.GlobalTag.globaltag = 'GR_R_74_V1A::All'  #for RECO data CMSSW_7_4_0_pre
 #process.load("RecoTracker.MeasurementDet.MeasurementTrackerEventProducer_cfi") #NEW!! 
 process.load("RecoTracker.TrackProducer.TrackRefitters_cff")
 process.TrackRefitter.NavigationSchool = ""
-process.TrackRefitter.src = "esGeneralTracks" # Default is generalTracks, changing depend on new collection from producer
+#process.TrackRefitter.src = "esGeneralTracks" # Default is generalTracks, changing depend on new collection from producer
+process.TrackRefitter.src = "ecalAlCaESAlignTrackReducerBis" # Default is generalTracks, changing depend on new collection from producer
 
 ################### Input file #############################
 from inputFiles_cfi import * #FileNames
