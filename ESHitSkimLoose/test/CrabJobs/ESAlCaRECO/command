@@ -1,0 +1,5 @@
+set DOUBLEEG_RAW="/store/data/Run2015D/DoubleEG/RAW/v1/000/256/925/00000/F020367F-D45F-E511-9270-02163E014390.root"
+cmsDriver.py reco -s RAW2DIGI,RECO,ALCA:EcalESAlign -n 100 --filein=${DOUBLEEG_RAW} --data --conditions=74X_dataRun2_Prompt_v2 --nThreads=4  --customise Configuration/DataProcessing/RecoTLR.customiseDataRun2Common --no_exec
+
+set SingleElectronRECOFile=/store/data/Run2015B/SingleElectron/RECO/PromptReco-v1/000/251/252/00000/4E9031DF-9827-E511-8A01-02163E012BD2.root
+cmsDriver.py reco -s RAW2DIGI,ALCA:EcalESAlign -n 100 --filein=${SingleElectronRECOFile} --secondfilein=/store/data/Run2015B/SingleElectron/RAW/v1/000/251/252/00000/1AAD09EE-F725-E511-88E0-02163E0119E4.root,/store/data/Run2015B/SingleElectron/RAW/v1/000/251/252/00000/98219A92-D025-E511-86ED-02163E011CF1.root --data --conditions=74X_dataRun2_Prompt_v4 --nThreads=4  --customise Configuration/DataProcessing/RecoTLR.customiseDataRun2Common --no_exec
