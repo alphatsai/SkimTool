@@ -12,8 +12,14 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
-
+#include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/TrackReco/interface/TrackFwd.h"
+#include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
 #include "TROOT.h"
+
+using namespace edm;
+using namespace reco;   
+using namespace std; 
 
 class ESHitSkimLoose : public edm::EDFilter
 {
@@ -31,8 +37,8 @@ protected:
   int Nesrh; 
   int Ntrack;
 
-  edm::InputTag generalTracksLabel_;	 
-  edm::InputTag esRecHitLabel_;	 
+  edm::EDGetTokenT<TrackCollection> generalTracksLabel_;	 
+  edm::EDGetTokenT<ESRecHitCollection> esRecHitLabel_;	 
 };
 
 #endif

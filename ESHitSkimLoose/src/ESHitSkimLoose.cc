@@ -27,15 +27,15 @@
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
 
-using namespace std;
+//using namespace std;
 //
 // constructors and destructor
 //
 ESHitSkimLoose::ESHitSkimLoose(const edm::ParameterSet& iConfig)
 {
 	 std::cout<<"In ESHitSkimLoose Constructor\n";
-	 generalTracksLabel_ = iConfig.getParameter< edm::InputTag >("generalTracksLabel");
-	 esRecHitLabel_      = iConfig.getParameter< edm::InputTag >("esRecHitLabel");
+	 generalTracksLabel_ = consumes<reco::TrackCollection>(iConfig.getParameter< edm::InputTag >("generalTracksLabel"));
+	 esRecHitLabel_      = consumes<ESRecHitCollection>(iConfig.getParameter< edm::InputTag >("esRecHitLabel"));
 
 	  _evt_run = 0;
 	  _restEvt = 0;
@@ -60,15 +60,16 @@ bool ESHitSkimLoose::filter(edm::Event& evt, const edm::EventSetup& iSetup)
   Ntrack = Nesrh = 0; 
 
   // Get ES rechits
-  edm::Handle<EcalRecHitCollection> PreshowerRecHits;
-  	evt.getByLabel( esRecHitLabel_, PreshowerRecHits );
+  //edm::Handle<EcalRecHitCollection> PreshowerRecHits;
+  edm::Handle<ESRecHitCollection> PreshowerRecHits;
+  	evt.getByToken( esRecHitLabel_, PreshowerRecHits );
 
   Nesrh=PreshowerRecHits->size();
   cout << " number of ES Hits " << Nesrh << endl;
 
   // Get reco Tracks 
   edm::Handle<reco::TrackCollection>   TrackCol;
-  	evt.getByLabel( generalTracksLabel_, TrackCol );
+  	evt.getByToken( generalTracksLabel_, TrackCol );
 
   for(reco::TrackCollection::const_iterator itTrack = TrackCol->begin();
       itTrack != TrackCol->end(); ++itTrack)
