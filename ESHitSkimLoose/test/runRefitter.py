@@ -11,8 +11,11 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 ###################### Modify following Global tag ################################
 ######################       This is example       ################################
 #	https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideFrontierConditions
-from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '74X_dataRun2_Candidate_2015_10_09_09_41_36', '')
+from Configuration.AlCa.GlobalTag import GlobalTag
+process.GlobalTag = GlobalTag(process.GlobalTag, '80X_dataRun2_Prompt_v8', '')
+
+#from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
+#process.GlobalTag = GlobalTag(process.GlobalTag, '74X_dataRun2_Candidate_2015_10_09_09_41_36', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '74X_dataRun2_Prompt_v2', '')
 
 ### Add or change spacial parameters from DB
@@ -28,8 +31,10 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '74X_dataRun2_Candidate_2015_10
 #process.load("RecoTracker.MeasurementDet.MeasurementTrackerEventProducer_cfi") #NEW!! 
 process.load("RecoTracker.TrackProducer.TrackRefitters_cff")
 process.TrackRefitter.NavigationSchool = ""
-#process.TrackRefitter.src = "esGeneralTracks" # Default is generalTracks, changing depend on new collection from producer
-process.TrackRefitter.src = "ecalAlCaESAlignTrackReducerBis" # Default is generalTracks, changing depend on new collection from producer
+
+#process.TrackRefitter.src = "esGeneralTracks" 
+#process.TrackRefitter.src = "ecalAlCaESAlignTrackReducerBis" 
+process.TrackRefitter.src = "ecalAlCaESAlignTrackReducer" # Default is generalTracks, changing depend on new collection from producer
 
 ################### Input file #############################
 from inputFiles_cfi import * #FileNames
