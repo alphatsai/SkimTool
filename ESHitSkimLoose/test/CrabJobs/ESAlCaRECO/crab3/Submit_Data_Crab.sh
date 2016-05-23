@@ -24,7 +24,7 @@ function getSection(){
 }
 
 #-----  Setting up crab environment  ---------------------------------------------------------------
-export SCRAM_ARCH=slc6_amd64_gcc491
+export SCRAM_ARCH=slc6_amd64_gcc530
 eval `scramv1 runtime -sh`
 source /cvmfs/cms.cern.ch/crab3/crab.sh
 voms-proxy-init -voms cms -valid 192:0
@@ -43,8 +43,9 @@ do
    echo $DATALABEL
 
    #PYTHONFILE=reco_RAW2DIGI_ALCA.py
-   PYTHONFILE=reco_RAW2DIGI_ALCA_RunD.py
+   #PYTHONFILE=reco_RAW2DIGI_ALCA_RunD.py
    #PYTHONFILE=reco_RAW2DIGI_ALCA_RunBC.py
+   PYTHONFILE=reco_RAW2DIGI_RECO_ALCA_Run2016BMay.py
    CRAB_FILE=config_files/"crab-$DATALABEL".py
 
    cp ./crab_template.py                      $CRAB_FILE 
