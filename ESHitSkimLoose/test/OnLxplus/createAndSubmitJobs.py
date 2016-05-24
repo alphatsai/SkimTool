@@ -81,7 +81,7 @@ BATCHDIR=${PWD}
 EOSPATH="EOS_PATH"
 
 #export SCRAM_ARCH=slc5_amd64_gcc462
-export SCRAM_ARCH=slc6_amd64_gcc481
+export SCRAM_ARCH=slc6_amd64_gcc530
 cd MAIN_WORKDIR
 eval `scram runtime -sh`
 
@@ -98,7 +98,8 @@ if [ ! -z $EOSPATH -a $EOSPATH!=" " ]
 then
   echo "Copying file  OUTPUT_FILENAME.root to " ${EOSPATH}
   source /afs/cern.ch/project/eos/installation/cms/etc/setup.sh 
-  /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select cp OUTPUT_FILENAME.root ${EOSPATH}/OUTPUT_FILENAME_JOB_NUMBER.root
+  xrdcp OUTPUT_FILENAME.root 'xroot://eoscms.cern.ch/'${EOSPATH}/OUTPUT_FILENAME_JOB_NUMBER.root
+  #/afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select cp OUTPUT_FILENAME.root ${EOSPATH}/OUTPUT_FILENAME_JOB_NUMBER.root
   #cmsStage -f OUTPUT_FILENAME.root 
 else 
   echo "Copying file  OUTPUT_FILENAME.root to DATASET_WORKDIR/output/OUTPUT_FILENAME_JOB_NUMBER.root"

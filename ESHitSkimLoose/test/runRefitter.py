@@ -12,20 +12,35 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 ######################       This is example       ################################
 #	https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideFrontierConditions
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '80X_dataRun2_Prompt_v8', '')
+process.GlobalTag = GlobalTag( process.GlobalTag, '80X_dataRun2_HLTValidation_EB_EE_ESAlignment_week20_2016', '')
+process.GlobalTag.toGet = cms.VPSet(
+        ###### starts customization of tracker part
+         cms.PSet(record = cms.string("TrackerAlignmentRcd"),
+                  tag =  cms.string("TrackerAlignment_MP_Run2016B_v2"),
+                  connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
+                  ),
+         cms.PSet(record = cms.string("TrackerAlignmentErrorExtendedRcd"),
+                  tag =  cms.string("TrackerAlignmentExtendedErrors_MP_Run2016B"),
+                  connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
+                  ),
+         cms.PSet(record = cms.string("SiPixelTemplateDBObjectRcd"),
+                  tag =  cms.string("SiPixelTemplateDBObject_38T_2016_v1_hltvalidation"),
+                  connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
+                  )
+)
 
 #from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, '74X_dataRun2_Candidate_2015_10_09_09_41_36', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '74X_dataRun2_Prompt_v2', '')
 
-### Add or change spacial parameters from DB
+#### Add or change spacial parameters from DB
 #process.TrackerAlignment2009 = cms.ESSource("PoolDBESSource",
 #                                          process.CondDBSetup,
 #                                          connect = cms.string('frontier://PromptProd/CMS_COND_31X_ALIGNMENT'),
 #                                          toGet= cms.VPSet(cms.PSet(record = cms.string("TrackerAlignmentRcd"),
 #                                                                     tag = cms.string('TrackerAlignment_2009_v1_prompt'))
 #                                                           )
-#					 )
+#)
 #process.es_prefer_TrackerAlignment2009 = cms.ESPrefer("PoolDBESSource", "TrackerAlignment2009")
 
 #process.load("RecoTracker.MeasurementDet.MeasurementTrackerEventProducer_cfi") #NEW!! 
