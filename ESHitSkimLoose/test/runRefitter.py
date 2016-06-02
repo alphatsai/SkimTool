@@ -1,8 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("REFIT")
-#process.load('Configuration.StandardSequences.GeometryDB_cff')
-#process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff')
@@ -12,27 +10,25 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 ######################       This is example       ################################
 #	https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideFrontierConditions
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag( process.GlobalTag, '80X_dataRun2_HLTValidation_EB_EE_ESAlignment_week20_2016', '')
-process.GlobalTag.toGet = cms.VPSet(
-        ###### starts customization of tracker part
-         cms.PSet(record = cms.string("TrackerAlignmentRcd"),
-                  tag =  cms.string("TrackerAlignment_MP_Run2016B_v2"),
-                  connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
-                  ),
-         cms.PSet(record = cms.string("TrackerAlignmentErrorExtendedRcd"),
-                  tag =  cms.string("TrackerAlignmentExtendedErrors_MP_Run2016B"),
-                  connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
-                  ),
-         cms.PSet(record = cms.string("SiPixelTemplateDBObjectRcd"),
-                  tag =  cms.string("SiPixelTemplateDBObject_38T_2016_v1_hltvalidation"),
-                  connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
-                  )
-)
+process.GlobalTag = GlobalTag( process.GlobalTag, '80X_dataRun2_Prompt_v8_CustomTrackerAndECAL_2016B_v0', '')
 
-#from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
-#process.GlobalTag = GlobalTag(process.GlobalTag, '74X_dataRun2_Candidate_2015_10_09_09_41_36', '')
-#process.GlobalTag = GlobalTag(process.GlobalTag, '74X_dataRun2_Prompt_v2', '')
-
+#### Add and replace additional tags case
+#process.GlobalTag = GlobalTag( process.GlobalTag, '80X_dataRun2_HLTValidation_EB_EE_ESAlignment_week20_2016', '')
+#process.GlobalTag.toGet = cms.VPSet(
+#        ###### starts customization of tracker part
+#         cms.PSet(record = cms.string("TrackerAlignmentRcd"),
+#                  tag =  cms.string("TrackerAlignment_MP_Run2016B_v2"),
+#                  connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
+#                  ),
+#         cms.PSet(record = cms.string("TrackerAlignmentErrorExtendedRcd"),
+#                  tag =  cms.string("TrackerAlignmentExtendedErrors_MP_Run2016B"),
+#                  connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
+#                  ),
+#         cms.PSet(record = cms.string("SiPixelTemplateDBObjectRcd"),
+#                  tag =  cms.string("SiPixelTemplateDBObject_38T_2016_v1_hltvalidation"),
+#                  connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
+#                  )
+#)
 #### Add or change spacial parameters from DB
 #process.TrackerAlignment2009 = cms.ESSource("PoolDBESSource",
 #                                          process.CondDBSetup,
@@ -43,16 +39,14 @@ process.GlobalTag.toGet = cms.VPSet(
 #)
 #process.es_prefer_TrackerAlignment2009 = cms.ESPrefer("PoolDBESSource", "TrackerAlignment2009")
 
-#process.load("RecoTracker.MeasurementDet.MeasurementTrackerEventProducer_cfi") #NEW!! 
 process.load("RecoTracker.TrackProducer.TrackRefitters_cff")
 process.TrackRefitter.NavigationSchool = ""
 
 #process.TrackRefitter.src = "esGeneralTracks" 
-#process.TrackRefitter.src = "ecalAlCaESAlignTrackReducerBis" 
 process.TrackRefitter.src = "ecalAlCaESAlignTrackReducer" # Default is generalTracks, changing depend on new collection from producer
 
 ################### Input file #############################
-from inputFiles_cfi import * #FileNames
+from inputFiles_cfi import * 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(FileNames)
     #fileNames = cms.untracked.vstring(FileNames_PionGunTest)
@@ -69,7 +63,5 @@ process.out = cms.OutputModule("PoolOutputModule",
 
 process.p = cms.EndPath(process.out)
 process.p1 = cms.Path(process.TrackRefitter)
-#process.p1 = cms.Path(process.MeasurementTrackerEvent #NEW!!
-#                     *process.TrackRefitter)  
 process.schedule = cms.Schedule( process.p1 , process.p)
 
