@@ -1,6 +1,13 @@
-# Dataset_name    Number_of_jobs    EOS_location    PyCfg_parameters (optional)
-#/job_SinglePionGun_GEN_SIM_v1/tdoan-job_SinglePionGun_RECO_v1-a2645d794d4263c6295ef839881df757/USER  1  /eos/cms/store/user/jtsai/test/SinglePionGun_RECO_POSTLS170_V5_MaxEvents1M 
-#job_SinglePionGun_GEN_SIM_v1/tdoan-job_SinglePionGun_RECO_v1-a2645d794d4263c6295ef839881df757/USER  10  /eos/cms/store/user/jtsai/ESAlignment/SinglePionGun_RECO_POSTLS170_V5_MaxEvents1M 
+### Dataset_name    Number_of_jobs    EOS_location    PyCfg_parameters (optional)
+# Example:
+#job_SinglePionGun_GEN_SIM_v1/tdoan-job_SinglePionGun_RECO_v1-a2645d794d4263c6295ef839881df757/USER  1  /eos/cms/store/user/jtsai/test/SinglePionGun_RECO_POSTLS170_V5_MaxEvents1M 
+#job_SinglePionGun_GEN_SIM_v1/tdoan-job_SinglePionGun_RECO_v1-a2645d794d4263c6295ef839881df757/USER  10 /eos/cms/store/user/jtsai/ESAlignment/SinglePionGun_RECO_POSTLS170_V5_MaxEvents1M 
 #SkimRefit_SinglePionGun_RECO_POSTLS170_V5_MaxEvents1M  50  /eos/cms/store/user/jtsai/ESAlignment/Skim_SinglePionGun_RECO_POSTLS170_V5_MaxEvents1M 
-SingleElectron_Run2015B-PromptReco-v1  400  /eos/cms/store/group/dpg_ecal/alca_ecalcalib/ESAlignment/ESALCALRECO_CMSSW_7_4_12_patch4_v2/SingleElectron_Run2015B-PromptReco-v1 
+#SingleElectron_Run2015B-PromptReco-v1  400  /eos/cms/store/group/dpg_ecal/alca_ecalcalib/ESAlignment/ESALCALRECO_CMSSW_7_4_12_patch4_v2/SingleElectron_Run2015B-PromptReco-v1 
 #SingleElectron_Run2015C-PromptReco-v1  450  /eos/cms/store/group/dpg_ecal/alca_ecalcalib/ESAlignment/ESALCALRECO_CMSSW_7_4_12_patch4_v2/SingleElectron_Run2015C-PromptReco-v1
+
+HLEPhysics_00 500 /eos/cms/store/group/dpg_ecal/alca_ecalcalib/ESAlignment/ESALCALRECO_CMSSW_8_0_7_patch3_v2/HLTPhysics/crab_HLTPhysics_Run2016B-v1/160513_115757/0000 
+HLEPhysics_01 500 /eos/cms/store/group/dpg_ecal/alca_ecalcalib/ESAlignment/ESALCALRECO_CMSSW_8_0_7_patch3_v2/HLTPhysics/crab_HLTPhysics_Run2016B-v1/160513_115757/0001 
+HLEPhysics_02 500 /eos/cms/store/group/dpg_ecal/alca_ecalcalib/ESAlignment/ESALCALRECO_CMSSW_8_0_7_patch3_v2/HLTPhysics/crab_HLTPhysics_Run2016B-v1/160513_115757/0002 
+HLEPhysics_03 500 /eos/cms/store/group/dpg_ecal/alca_ecalcalib/ESAlignment/ESALCALRECO_CMSSW_8_0_7_patch3_v2/HLTPhysics/crab_HLTPhysics_Run2016B-v1/160513_115757/0003 
+

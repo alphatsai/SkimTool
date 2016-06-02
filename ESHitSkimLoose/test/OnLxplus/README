@@ -1,8 +1,8 @@
 Submit and save to EOS 
 skim done!
-./createAndSubmitJobs.py -w 08Dec_Skim -d datasetList.txt -c ../getSkimLoose.py -E /eos/cms/store/user/jtsai/ESAlignment
+./createAndSubmitJobs.py -w 08Dec_Skim -d datasetList.txt -c ../getSkimLoose.py -E /eos/cms/store/user/jtsai/ESAlignment -q cmscaf1nd
 
 track refit done!
-./createAndSubmitJobs.py -w 06Jan_SkimRefit -d datasetList.txt -c ../runRefitter.py -E /eos/cms/store/user/jtsai/ESAlignment -o Refitter
+./createAndSubmitJobs.py -w 06Jan_SkimRefit -d datasetList.txt -c ../runRefitter.py -E /eos/cms/store/user/jtsai/ESAlignment -o Refitter -q cmscaf1nd
 
 Check size "eosls ESAlignment/Skim_SinglePionGun_RECO_POSTLS170_V5_MaxEvents1M | awk '{a+=$5; print a/1000000 "M"}' | tail -n1"
