@@ -1,0 +1,10 @@
+# Name       # isData(0/1)   # Datasets
+HLTPhysics     1              /HLTPhysics/Run2016B-v1/RAW
+HLTPhysics0    1              /HLTPhysics0/Run2016B-v1/RAW
+HLTPhysics1    1              /HLTPhysics1/Run2016B-v1/RAW
+HLTPhysics2    1              /HLTPhysics2/Run2016B-v1/RAW
+HLTPhysics3    1              /HLTPhysics3/Run2016B-v1/RAW
+  
+
+
+
