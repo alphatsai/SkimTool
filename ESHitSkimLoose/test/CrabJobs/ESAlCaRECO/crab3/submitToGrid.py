@@ -77,6 +77,9 @@ def main():
         sys.exit()
 
     #read list of samples
+    if not os.path.isfile(opt.inputList): 
+        print 'ERROR: '+opt.inputList+' not found'
+        sys.exit()
     samplesList = open(opt.inputList,'r')
 
     st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y%m%d%H%M')
@@ -87,7 +90,10 @@ def main():
 
     if not opt.workDir:
         opt.workDir = 'crab_%s'%st
-        
+
+    lumiMask = opt.lumiMask
+    if lumiMask:
+        lumiMask = os.path.realpath(lumiMask)
             
     #submit jobs
     os.system("mkdir -p %s" % opt.workDir)
@@ -99,7 +105,7 @@ def main():
                           lfnDirBase = lfnDirBase,
                           dataset    = info[2],
                           isData     = info[1],
-                          lumiMask   = os.path.realpath(opt.lumiMask),
+                          lumiMask   = lumiMask,
                           cfg        = opt.cfg,
                           workDir    = opt.workDir,
                           submit     = opt.submit
