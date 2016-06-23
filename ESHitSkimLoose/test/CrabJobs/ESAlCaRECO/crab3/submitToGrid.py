@@ -9,7 +9,7 @@ CMSEOSECAL_ESAL='/store/group/dpg_ecal/alca_ecalcalib/ESAlignment'
 """
 creates the crab cfg and submits the job
 """
-def submitProduction( name, lfnDirBase, dataset, isData, cfg, workDir, lumiMask, submit=False):
+def submitProduction( name, lfnDirBase, dataset, isData, site, cfg, workDir, lumiMask, submit=False):
     
     os.system("rm -rvf %s/*%s* "%( workDir, name))
     crabConfigFile=workDir+'/'+name+'_cfg.py'
@@ -46,7 +46,7 @@ def submitProduction( name, lfnDirBase, dataset, isData, cfg, workDir, lumiMask,
     config_file.write('config.Data.outLFNDirBase = \'%s\'\n' % lfnDirBase)
     config_file.write('\n')
     config_file.write('config.section_("Site")\n')
-    config_file.write('config.Site.storageSite = "T2_CH_CERN"\n')
+    config_file.write('config.Site.storageSite = "%s"\n'% site )
     config_file.close()
     
     if submit : os.system('crab submit -c %s' % crabConfigFile )
@@ -68,7 +68,8 @@ def main():
     parser.add_option('-i', '--inputList',   dest='inputList',   help='list of files',                  default=None,            type='string'      )
     parser.add_option('-j', '--jsonLumi',    dest='lumiMask',    help='json with list of good lumis',   default=None,            type='string'      )
     parser.add_option('-w', '--workDir',     dest='workDir',     help='working directory',              default=None,            type='string'      )
-    parser.add_option('-s', '--lfn',         dest='lfn',         help='base lfn to store outputs',      default=CMSEOSECAL_ESAL, type='string'      )
+    parser.add_option('-s', '--site',        dest='site',        help='Site default: T2_CH_CERN',       default='T2_CH_CERN',    type='string'      )
+    parser.add_option('-o', '--lfn',         dest='lfn',         help='base lfn to store outputs',      default=CMSEOSECAL_ESAL, type='string'      )
     parser.add_option('-S', '--submit',      dest='submit',      help='submit jobs',                    default=False,           action='store_true')
     (opt, args) = parser.parse_args()
 
@@ -105,6 +106,7 @@ def main():
                           lfnDirBase = lfnDirBase,
                           dataset    = info[2],
                           isData     = info[1],
+                          site       = opt.site,
                           lumiMask   = lumiMask,
                           cfg        = opt.cfg,
                           workDir    = opt.workDir,
